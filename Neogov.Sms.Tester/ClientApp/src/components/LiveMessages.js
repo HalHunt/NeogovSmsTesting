@@ -2,7 +2,7 @@ import React from 'react';
 import { HubConnectionBuilder } from '@aspnet/signalr/dist/browser/signalr'
 import { Table } from 'reactstrap';
 import LocalDateTime from './LocalDateTime'
-
+import FormattedPhoneNumber from './FormattedPhoneNumber'
 
 const LiveMessages = props => {
 
@@ -58,8 +58,8 @@ const LiveMessages = props => {
                     {messages.map(message =>
                         <tr key={message.id}>
                             <td><LocalDateTime utcDateTime={message.createdUtc} /></td>
-                            <td>{message.to}</td>
-                            <td>{message.from}</td>
+                            <td><FormattedPhoneNumber phoneNumber={message.to}></FormattedPhoneNumber></td>
+                            <td><FormattedPhoneNumber phoneNumber={message.from}></FormattedPhoneNumber></td>
                             <td>{message.body}</td>
                         </tr>
                     )}

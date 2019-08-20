@@ -1,8 +1,9 @@
 import React from 'react';
+import FormattedPhoneNumber from './FormattedPhoneNumber'
 
 const Home = props => {
 
-    const [configuration, setConfiguration] = React.useState([]);
+    const [configuration, setConfiguration] = React.useState({ messageToNumber: 'unknown' });
 
     React.useEffect(() => {
         console.log(`Fetching configuration...`);
@@ -20,7 +21,7 @@ const Home = props => {
             <h1>Hello, Testers!</h1>
             <p className="lead">
                 This simple website was created to help you test NEOGOV's candidate text messaging feature.<br />
-                Send your test text messages to: <strong>{configuration.messageToNumber}</strong>.
+                Send your test text messages to: <strong><FormattedPhoneNumber phoneNumber={configuration.messageToNumber}></FormattedPhoneNumber></strong>.
             </p>
             <p>There are 2 pages to help you test.</p>
             <ul>

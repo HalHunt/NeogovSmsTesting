@@ -22,21 +22,5 @@ namespace Neogov.Sms.Tester.Models
         public string Body { get; set; }
 
         #endregion
-
-        #region Methods
-
-        public Message WithFormattedPhoneNumbers()
-        {
-            return new Message
-            {
-                Id = Id,
-                CreatedUtc = CreatedUtc,
-                From = PhoneNumberHelper.FormatNumber(From),
-                Body = Body,
-                To = PhoneNumberHelper.FormatNumber(To)
-            };
-        }
-
-        #endregion
     }
 }
