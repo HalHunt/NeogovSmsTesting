@@ -33,6 +33,7 @@ namespace Neogov.Sms.Tester
 
             var appConfig = new AppConfiguration
             {
+                TwilioAccountSid = Configuration[AppConfiguration.ConfigKeyTwilioAccountSid],
                 TwilioAuthToken = Configuration[AppConfiguration.ConfigKeyTwilioAuthToken],
                 MessageToNumber = Configuration[AppConfiguration.ConfigKeyMessageToNumber]
             };

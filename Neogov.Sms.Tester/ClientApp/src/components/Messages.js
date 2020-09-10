@@ -2,6 +2,7 @@ import React from 'react';
 import { Table } from 'reactstrap';
 import LocalDateTime from './LocalDateTime'
 import SearchForm from './SearchForm'
+import FormattedPhoneNumber from './FormattedPhoneNumber'
 
 const Messages = props => {
 
@@ -57,8 +58,8 @@ const Messages = props => {
                                 {messages.map(message =>
                                     <tr key={message.id}>
                                         <td><LocalDateTime utcDateTime={message.createdUtc} /></td>
-                                        <td>{message.to}</td>
-                                        <td>{message.from}</td>
+                                        <td><FormattedPhoneNumber phoneNumber={message.to}></FormattedPhoneNumber></td>
+                                        <td><FormattedPhoneNumber phoneNumber={message.from}></FormattedPhoneNumber></td>
                                         <td>{message.body}</td>
                                     </tr>
                                 )}

@@ -18,7 +18,7 @@ namespace Neogov.Sms.Tester.Controllers
         [HttpGet]
         public IActionResult GetConfiguration()
         {
-            return Ok(AppConfiguration.WithFormattedPhoneNumbers());
+            return Ok(AppConfiguration);
         }
 
         #endregion
