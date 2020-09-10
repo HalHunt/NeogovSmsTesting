@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Neogov.Sms.Tester.Models;
 using Neogov.Sms.Tester.Services;
 
@@ -23,8 +23,7 @@ namespace Neogov.Sms.Tester
         {
             services.AddDbContext<MessageDbContext>(options => options.UseSqlite("Data Source=messages.db"));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc);
+            services.AddControllersWithViews();
 
             services.AddSignalR();
 
@@ -39,6 +38,7 @@ namespace Neogov.Sms.Tester
             };
             if (!string.IsNullOrWhiteSpace(Configuration[AppConfiguration.ConfigKeyMessagesPageSize]) && int.TryParse(Configuration[AppConfiguration.ConfigKeyMessagesPageSize], out _))
                 appConfig.MessagesPageSize = int.Parse(Configuration[AppConfiguration.ConfigKeyMessagesPageSize]);
+            
             services.AddSingleton(typeof(AppConfiguration), appConfig);
 
             services.AddSpaStaticFiles(configuration =>
@@ -47,7 +47,7 @@ namespace Neogov.Sms.Tester
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -56,15 +56,19 @@ namespace Neogov.Sms.Tester
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseRouting();
 
-            app.UseSignalR(routes => routes.MapHub<MessageHub>("/hub/messages"));
-            app.UseMvcWithDefaultRoute();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<MessageHub>("/hub/messages");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
 
             app.UseSpa(spa =>
             {
